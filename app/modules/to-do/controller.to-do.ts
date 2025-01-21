@@ -4,6 +4,7 @@ import { HttpStatusCode } from "../../common/enum/http-status-code";
 import * as toDoRepository from "./repository.to-do";
 import type { createToDoSchema } from "./schemas/create-to-do.schema";
 import { getToDoQuery, getToDoQuerySchema } from "./schemas/get-to-do.schema";
+import type { updateToDoSchema } from "./schemas/update-to-do.schema";
 
 export async function create(req: FastifyRequest<{ Body: createToDoSchema }>, rep: FastifyReply) {
     const todo = {
@@ -21,18 +22,16 @@ export async function create(req: FastifyRequest<{ Body: createToDoSchema }>, re
     return rep.code(HttpStatusCode.OK).send(insertedToDo);
 }
 
-export async function update(req: FastifyRequest<{ Body: createToDoSchema }>, rep: FastifyReply) {
+export async function update(req: FastifyRequest<{ Body: updateToDoSchema }>, rep: FastifyReply) {
+    const { id } = req.params as { id: string };
     const todo = {
         title: req.body.title,
         description: req.body.description,
-        creatorid: req.user.id!,
         notifyAt: req.body.notifyAt,
-        isCompleted: req.body.isCompleted,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        isCompleted: req.body.isCompleted
     };
 
-    const insertedToDo = await toDoRepository.insert(sqlCon, todo);
+    const insertedToDo = await toDoRepository.update(sqlCon, todo, id);
 
     return rep.code(HttpStatusCode.OK).send(insertedToDo);
 }

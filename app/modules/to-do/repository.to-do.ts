@@ -7,7 +7,17 @@ type InsertableObjectiveRowType = Insertable<Objectives>;
 export async function insert(con: Kysely<DB> | Transaction<DB>, entity: InsertableObjectiveRowType) {
     return await con.insertInto("objectives").returningAll().values(entity).executeTakeFirstOrThrow();
 }
-
+export async function update(con: Kysely<DB> | Transaction<DB>, entity: object, id: string) {
+    return await con
+        .updateTable("objectives")
+        .set({
+            ...entity,
+            updatedAt: new Date()
+        })
+        .where("id", "=", id!)
+        .returningAll()
+        .executeTakeFirstOrThrow();
+}
 export async function getToDoById(con: Kysely<DB> | Transaction<DB>, id: string) {
     return await con.selectFrom("objectives").selectAll().where("id", "=", id).executeTakeFirstOrThrow();
 }
