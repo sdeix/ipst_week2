@@ -8,8 +8,8 @@ export async function insert(con: Kysely<DB> | Transaction<DB>, entity: Insertab
     return await con.insertInto("objectives").returningAll().values(entity).executeTakeFirstOrThrow();
 }
 
-export async function getUserById(con: Kysely<DB> | Transaction<DB>, id: string) {
-    return await con.selectFrom("users").selectAll().where("id", "=", id).executeTakeFirstOrThrow();
+export async function getToDoById(con: Kysely<DB> | Transaction<DB>, id: string) {
+    return await con.selectFrom("objectives").selectAll().where("id", "=", id).executeTakeFirstOrThrow();
 }
 export async function getToDosByQuery(con: Kysely<DB> | Transaction<DB>, query: getToDoQuery, userId: Objectives["creatorid"]) {
     return await con
