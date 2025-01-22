@@ -27,3 +27,6 @@ export async function get(con: Kysely<DB> | Transaction<DB>, userId: UserObjecti
 export async function insert(con: Kysely<DB> | Transaction<DB>, entity: InsertableShareRowType) {
     return await con.insertInto("user-objective-shares").returningAll().values(entity).executeTakeFirstOrThrow();
 }
+export async function remove(con: Kysely<DB> | Transaction<DB>, id: string) {
+    return await con.deleteFrom("user-objective-shares").where("id", "=", id).executeTakeFirst();
+}

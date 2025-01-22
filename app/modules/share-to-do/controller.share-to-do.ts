@@ -5,11 +5,11 @@ import { HandlingErrorType } from "../../common/enum/error-types";
 import { HttpStatusCode } from "../../common/enum/http-status-code";
 import { getToDoById } from "../to-do/repository.to-do";
 import { getById } from "../user/repository.user";
-import * as toDoRepository from "./repository.share-to-do";
+import * as shareToDoRepository from "./repository.share-to-do";
 import type { shareToDoSchema } from "./schemas/share-to-do.schema.ts";
 
 export async function get(req: FastifyRequest, rep: FastifyReply) {
-    const data = await toDoRepository.get(sqlCon, req.user.id!);
+    const data = await shareToDoRepository.get(sqlCon, req.user.id!);
 
     return rep.code(HttpStatusCode.OK).send(data);
 }
@@ -29,7 +29,19 @@ export async function share(req: FastifyRequest<{ Body: shareToDoSchema }>, rep:
         return rep.code(HttpStatusCode.NOT_ACCEPTABLE).send(info);
     }
 
-    const insertedToDo = await toDoRepository.insert(sqlCon, req.body);
+    const insertedToDo = await shareToDoRepository.insert(sqlCon, req.body);
 
-    return rep.code(HttpStatusCode.OK).send(insertedToDo);
+    return rep.code(HttpStatusCode.CREATED).send(insertedToDo);
+}
+
+export async function remove(req: FastifyRequest, rep: FastifyReply) {
+    const { id } = req.params as { id: string };
+
+    const deleted = await shareToDoRepository.remove(sqlCon, id);
+    if (!Number(deleted.numDeletedRows)) {
+        const info: IHandlingResponseError = { type: HandlingErrorType.Found, property: "user-objective-shares" };
+        return rep.code(HttpStatusCode.NOT_FOUND).send(info);
+    }
+
+    return rep.code(HttpStatusCode.OK).send({ result: "deleted" });
 }

@@ -21,7 +21,7 @@ export async function create(req: FastifyRequest<{ Body: createToDoSchema }>, re
 
     const insertedToDo = await toDoRepository.insert(sqlCon, todo);
 
-    return rep.code(HttpStatusCode.OK).send(insertedToDo);
+    return rep.code(HttpStatusCode.CREATED).send(insertedToDo);
 }
 
 export async function update(req: FastifyRequest<{ Body: updateToDoSchema }>, rep: FastifyReply) {
