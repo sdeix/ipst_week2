@@ -1,7 +1,7 @@
 import { type Insertable, type Kysely, Transaction } from "kysely";
 import { DB, UserObjectiveShares } from "../../common/types/kysely/db.type";
 
-type InsertableObjectiveRowType = Insertable<UserObjectiveShares>;
+type InsertableShareRowType = Insertable<UserObjectiveShares>;
 
 export async function get(con: Kysely<DB> | Transaction<DB>, userId: UserObjectiveShares["userId"]) {
     return await con
@@ -23,4 +23,7 @@ export async function get(con: Kysely<DB> | Transaction<DB>, userId: UserObjecti
             "users.name as sharedWithUserName"
         ])
         .execute();
+}
+export async function insert(con: Kysely<DB> | Transaction<DB>, entity: InsertableShareRowType) {
+    return await con.insertInto("user-objective-shares").returningAll().values(entity).executeTakeFirstOrThrow();
 }

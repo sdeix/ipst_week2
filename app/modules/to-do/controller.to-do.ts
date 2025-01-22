@@ -1,8 +1,11 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
+import { IHandlingResponseError } from "../../common/config/http-response";
 import { sqlCon } from "../../common/config/kysely-config";
+import { HandlingErrorType } from "../../common/enum/error-types";
 import { HttpStatusCode } from "../../common/enum/http-status-code";
 import * as toDoRepository from "./repository.to-do";
 import type { createToDoSchema } from "./schemas/create-to-do.schema";
+import { getToDoByIdSchema } from "./schemas/get-to-do-by-id.schema";
 import { getToDoQuery, getToDoQuerySchema } from "./schemas/get-to-do.schema";
 import type { updateToDoSchema } from "./schemas/update-to-do.schema";
 
@@ -47,6 +50,11 @@ export async function get(req: FastifyRequest, rep: FastifyReply) {
 export async function getById(req: FastifyRequest, rep: FastifyReply) {
     const { id } = req.params as { id: string };
 
+    // getToDoByIdSchema.parse(id);
+
+    // const info: IHandlingResponseError = { type: HandlingErrorType.Allowed, property: "objectiveId" };
+    // return rep.code(HttpStatusCode.NOT_FOUND).send(info);
+    // Нужно переделать
     const data = await toDoRepository.getToDoById(sqlCon, id);
 
     return rep.code(HttpStatusCode.OK).send(data);
