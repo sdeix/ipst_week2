@@ -1,4 +1,5 @@
 import type { FastifyInstance } from "fastify";
+import { shareToDoRouter } from "./share-to-do/router.share-to-do";
 import { toDoRouter } from "./to-do/router.to-do";
 import { userRouter } from "./user/router.user";
 
@@ -9,5 +10,6 @@ interface IProvider {
 
 export const HttpProvider: IProvider[] = [
     { instance: userRouter, prefix: "user" },
-    { instance: toDoRouter, prefix: "to-do" }
+    { instance: toDoRouter, prefix: "to-do" },
+    { instance: shareToDoRouter, prefix: "share-to-do" }
 ];

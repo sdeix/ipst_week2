@@ -14,7 +14,7 @@ export async function update(con: Kysely<DB> | Transaction<DB>, entity: object, 
             ...entity,
             updatedAt: new Date()
         })
-        .where("id", "=", id!)
+        .where("id", "=", id)
         .returningAll()
         .executeTakeFirstOrThrow();
 }
