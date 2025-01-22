@@ -23,6 +23,7 @@ export async function create(req: FastifyRequest<{ Body: signUpSchema }>, rep: F
 
     const user = {
         name: req.body.name,
+        login: req.body.login,
         email: req.body.email,
         password: hashPassword
     };
