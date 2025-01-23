@@ -21,7 +21,7 @@ export async function update(con: Kysely<DB> | Transaction<DB>, entity: object, 
 export async function getToDoById(con: Kysely<DB> | Transaction<DB>, id: string) {
     return await con.selectFrom("objectives").selectAll().where("id", "=", id).executeTakeFirst();
 }
-export async function getToDosByQuery(con: Kysely<DB> | Transaction<DB>, query: getToDoQuery, userId: Objectives["creatorid"]) {
+export async function getToDosByQuery(con: Kysely<DB> | Transaction<DB>, query: getToDoQuery, userId: string) {
     return await con
         .selectFrom("objectives")
         .selectAll()
@@ -39,7 +39,7 @@ export async function getToDosByQuery(con: Kysely<DB> | Transaction<DB>, query: 
                 )
             ])
         )
-        .$if(query.search !== undefined, (qb) => qb.where("title", "like", `%${query.search}%`))
+        .$if(query.search !== undefined, (qb) => qb.where("title", "ilike", `%${query.search}%`))
         .$if(query.isCompleted !== undefined, (qb) => qb.where("isCompleted", "=", query.isCompleted === "true" ? true : false))
         .$if(query.sortBy !== undefined, (qb) => qb.orderBy(query.sortBy, query.sortOrder || "asc"))
         .limit(query.limit)

@@ -5,16 +5,13 @@ import { HandlingErrorType } from "../../common/enum/error-types";
 import { HttpStatusCode } from "../../common/enum/http-status-code";
 import * as toDoRepository from "./repository.to-do";
 import type { createToDoSchema } from "./schemas/create-to-do.schema";
-import { getToDoQuery, getToDoQuerySchema } from "./schemas/get-to-do.schema";
+import { getToDoQuery } from "./schemas/get-to-do.schema";
 import type { updateToDoSchema } from "./schemas/update-to-do.schema";
 
 export async function create(req: FastifyRequest<{ Body: createToDoSchema }>, rep: FastifyReply) {
     const todo = {
-        title: req.body.title,
-        description: req.body.description,
+        ...req.body,
         creatorid: req.user.id!,
-        notifyAt: req.body.notifyAt,
-        isCompleted: req.body.isCompleted,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
     };
@@ -39,9 +36,7 @@ export async function update(req: FastifyRequest<{ Body: updateToDoSchema }>, re
 }
 
 export async function get(req: FastifyRequest, rep: FastifyReply) {
-    const query: getToDoQuery = getToDoQuerySchema.parse(req.query);
-
-    const data = await toDoRepository.getToDosByQuery(sqlCon, query, req.user.id!);
+    const data = await toDoRepository.getToDosByQuery(sqlCon, req.query as getToDoQuery, req.user.id!);
 
     return rep.code(HttpStatusCode.OK).send(data);
 }

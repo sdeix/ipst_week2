@@ -3,7 +3,7 @@ import { DB, UserObjectiveShares } from "../../common/types/kysely/db.type";
 
 type InsertableShareRowType = Insertable<UserObjectiveShares>;
 
-export async function get(con: Kysely<DB> | Transaction<DB>, userId: UserObjectiveShares["userId"]) {
+export async function get(con: Kysely<DB> | Transaction<DB>, userId: string) {
     return await con
         .selectFrom("user-objective-shares")
         .innerJoin("objectives", "user-objective-shares.objectiveId", "objectives.id")
