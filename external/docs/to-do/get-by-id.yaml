@@ -1,0 +1,47 @@
+paths:
+  /todo/{id}:
+    get:
+      tags:
+        - ToDo
+      summary: Retrieve a ToDo item by ID
+      description: Fetch a single ToDo item using its ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the ToDo item.
+      responses:
+        '200':
+          description: ToDo item details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  title:
+                    type: string
+                  description:
+                    type: string
+                    nullable: true
+                  notifyAt:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  isCompleted:
+                    type: boolean
+                    nullable: true
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
