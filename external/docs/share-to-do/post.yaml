@@ -1,0 +1,70 @@
+paths:
+  /share-to-do:
+    post:
+      tags:
+        - ShareToDo
+      summary: Share a ToDo item
+      description: Share a ToDo item with another user by providing the ToDo ID and user ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - objectiveId
+              properties:
+                userId:
+                  type: string
+                  format: uuid
+                  description: ID of the user to share the ToDo with.
+                objectiveId:
+                  type: string
+                  format: uuid
+                  description: ID of the ToDo item to share.
+      responses:
+        '201':
+          description: ToDo item successfully shared
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  sharedWith:
+                    type: string
+                    format: uuid
+                  sharedToDoId:
+                    type: string
+                    format: uuid
+        '404':
+          description: ToDo item or user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - Found
+                  property:
+                    type: string
+                    example: objectiveId
+        '406':
+          description: Operation not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - Allowed
+                  property:
+                    type: string
+                    example: userId

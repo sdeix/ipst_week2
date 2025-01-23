@@ -1,0 +1,40 @@
+paths:
+  /share-to-do/{id}:
+    delete:
+      tags:
+        - ShareToDo
+      summary: Remove shared ToDo access
+      description: Remove a user's access to a shared ToDo item using its ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the shared ToDo item.
+      responses:
+        '200':
+          description: Successfully removed access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: deleted
+        '404':
+          description: Shared ToDo item not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - Found
+                  property:
+                    type: string
+                    example: user-objective-shares

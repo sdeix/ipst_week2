@@ -7,6 +7,4 @@ export const shareToDoRouter = async (app: FastifyInstance) => {
     app.get("/", {}, ShareToDoController.get); // Получение всех заданий, к которым дан доступ другим пользователям
     app.post("/", { schema: shareToDoFSchema }, ShareToDoController.share); // Добавление доступа пользователю
     app.delete("/:id", { schema: deleteShareFSchema }, ShareToDoController.remove); // Удаление доступа к заданию по id
-    // app.get("/:id", { schema: shareToDoFSchema }, toDoController.getById);
-    // app.patch("/:id", { schema: shareToDoFSchema }, toDoController.update);
 };

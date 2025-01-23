@@ -35,7 +35,7 @@ export async function getToDosByQuery(con: Kysely<DB> | Transaction<DB>, query: 
                         .selectFrom("user-objective-shares")
                         .select("id")
                         .where("user-objective-shares.userId", "=", userId)
-                        .whereRef("user-objective-shares.objectiveId", "=", "objectives.id")
+                        .whereRef("user-objective-shares.objectiveId", "=", "objectives.id" as any)
                 )
             ])
         )

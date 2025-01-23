@@ -1,0 +1,60 @@
+paths:
+  /todo:
+    post:
+      tags:
+        - ToDo
+      summary: Create a new ToDo item
+      description: Add a new ToDo item to the database.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                  nullable: true
+                notifyAt:
+                  type: string
+                  format: date-time
+                  nullable: true
+                isCompleted:
+                  type: boolean
+                  nullable: true
+      responses:
+        '201':
+          description: ToDo item successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  title:
+                    type: string
+                  description:
+                    type: string
+                    nullable: true
+                  notifyAt:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  isCompleted:
+                    type: boolean
+                    nullable: true
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
