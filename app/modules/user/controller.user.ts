@@ -6,14 +6,14 @@ import { sqlCon } from "../../common/config/kysely-config";
 import { HandlingErrorType } from "../../common/enum/error-types";
 import { HttpStatusCode } from "../../common/enum/http-status-code";
 import * as userRepository from "./repository.user";
-import type { loginSchema } from "./schemas/login.schema.ts";
-import type { signUpSchema } from "./schemas/sign-up.schema.ts";
+import type { loginType } from "./schemas/login.schema.ts";
+import type { signUpType } from "./schemas/sign-up.schema.ts";
 
 const generateJwt = (id: string, email: string) => {
     return jwt.sign({ id, email }, process.env.JWT_SECRET!, { expiresIn: "7d" });
 };
 
-export async function create(req: FastifyRequest<{ Body: signUpSchema }>, rep: FastifyReply) {
+export async function create(req: FastifyRequest<{ Body: signUpType }>, rep: FastifyReply) {
     const emailExists = await userRepository.getByEmail(sqlCon, req.body.email);
     if (emailExists) {
         const info: IHandlingResponseError = { type: HandlingErrorType.Unique, property: "email" };
@@ -38,7 +38,7 @@ export async function create(req: FastifyRequest<{ Body: signUpSchema }>, rep: F
     return rep.code(HttpStatusCode.OK).send(data);
 }
 
-export async function login(req: FastifyRequest<{ Body: loginSchema }>, rep: FastifyReply) {
+export async function login(req: FastifyRequest<{ Body: loginType }>, rep: FastifyReply) {
     const user = await userRepository.getByEmail(sqlCon, req.body.email);
     if (!user) {
         const info: IHandlingResponseError = { type: HandlingErrorType.Found, property: "email" };

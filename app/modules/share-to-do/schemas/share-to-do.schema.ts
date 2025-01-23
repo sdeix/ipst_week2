@@ -6,5 +6,5 @@ const schema = z.object({
     objectiveId: z.string().uuid()
 });
 
-export type shareToDoSchema = z.infer<typeof schema>;
+export type shareToDoType = z.infer<typeof schema>;
 export const shareToDoFSchema: FastifySchema = { body: schema };

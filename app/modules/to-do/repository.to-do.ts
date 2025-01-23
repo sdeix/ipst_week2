@@ -1,6 +1,6 @@
 import { type Insertable, type Kysely, Transaction } from "kysely";
 import { DB, Objectives } from "../../common/types/kysely/db.type";
-import { getToDoQuery } from "./schemas/get-to-do.schema";
+import { GetToDoQueryType } from "./schemas/get-to-do.schema";
 
 type InsertableObjectiveRowType = Insertable<Objectives>;
 
@@ -21,7 +21,7 @@ export async function update(con: Kysely<DB> | Transaction<DB>, entity: object, 
 export async function getToDoById(con: Kysely<DB> | Transaction<DB>, id: string) {
     return await con.selectFrom("objectives").selectAll().where("id", "=", id).executeTakeFirst();
 }
-export async function getToDosByQuery(con: Kysely<DB> | Transaction<DB>, query: getToDoQuery, userId: string) {
+export async function getToDosByQuery(con: Kysely<DB> | Transaction<DB>, query: GetToDoQueryType, userId: string) {
     return await con
         .selectFrom("objectives")
         .selectAll()

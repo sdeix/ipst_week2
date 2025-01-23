@@ -8,5 +8,5 @@ const schema = z.object({
     email: z.string().email()
 });
 
-export type signUpSchema = z.infer<typeof schema>;
+export type signUpType = z.infer<typeof schema>;
 export const signUpFSchema: FastifySchema = { body: schema };

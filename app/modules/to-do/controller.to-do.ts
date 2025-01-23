@@ -4,11 +4,11 @@ import { sqlCon } from "../../common/config/kysely-config";
 import { HandlingErrorType } from "../../common/enum/error-types";
 import { HttpStatusCode } from "../../common/enum/http-status-code";
 import * as toDoRepository from "./repository.to-do";
-import type { createToDoSchema } from "./schemas/create-to-do.schema";
-import { getToDoQuery } from "./schemas/get-to-do.schema";
-import type { updateToDoSchema } from "./schemas/update-to-do.schema";
+import type { СreateToDoType } from "./schemas/create-to-do.schema";
+import { IGetToDo } from "./schemas/get-to-do.schema";
+import type { UpdateToDoType } from "./schemas/update-to-do.schema";
 
-export async function create(req: FastifyRequest<{ Body: createToDoSchema }>, rep: FastifyReply) {
+export async function create(req: FastifyRequest<{ Body: СreateToDoType }>, rep: FastifyReply) {
     const todo = {
         ...req.body,
         creatorid: req.user.id!,
@@ -21,7 +21,7 @@ export async function create(req: FastifyRequest<{ Body: createToDoSchema }>, re
     return rep.code(HttpStatusCode.CREATED).send(insertedToDo);
 }
 
-export async function update(req: FastifyRequest<{ Body: updateToDoSchema }>, rep: FastifyReply) {
+export async function update(req: FastifyRequest<{ Body: UpdateToDoType }>, rep: FastifyReply) {
     const { id } = req.params as { id: string };
     const todo = {
         title: req.body.title,
@@ -35,8 +35,8 @@ export async function update(req: FastifyRequest<{ Body: updateToDoSchema }>, re
     return rep.code(HttpStatusCode.OK).send(insertedToDo);
 }
 
-export async function get(req: FastifyRequest, rep: FastifyReply) {
-    const data = await toDoRepository.getToDosByQuery(sqlCon, req.query as getToDoQuery, req.user.id!);
+export async function get(req: FastifyRequest<IGetToDo>, rep: FastifyReply) {
+    const data = await toDoRepository.getToDosByQuery(sqlCon, req.query, req.user.id!);
 
     return rep.code(HttpStatusCode.OK).send(data);
 }

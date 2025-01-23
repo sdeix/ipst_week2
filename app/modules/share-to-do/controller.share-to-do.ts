@@ -6,14 +6,14 @@ import { HttpStatusCode } from "../../common/enum/http-status-code";
 import { getToDoById } from "../to-do/repository.to-do";
 import { getById } from "../user/repository.user";
 import * as shareToDoRepository from "./repository.share-to-do";
-import type { shareToDoSchema } from "./schemas/share-to-do.schema.ts";
+import type { shareToDoType } from "./schemas/share-to-do.schema.ts";
 
 export async function get(req: FastifyRequest, rep: FastifyReply) {
     const data = await shareToDoRepository.get(sqlCon, req.user.id!);
 
     return rep.code(HttpStatusCode.OK).send(data);
 }
-export async function share(req: FastifyRequest<{ Body: shareToDoSchema }>, rep: FastifyReply) {
+export async function share(req: FastifyRequest<{ Body: shareToDoType }>, rep: FastifyReply) {
     const todo = await getToDoById(sqlCon, req.body.objectiveId);
     const user = await getById(sqlCon, req.body.userId);
     if (!todo) {
