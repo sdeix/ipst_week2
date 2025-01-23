@@ -1,0 +1,577 @@
+{
+	"info": {
+		"_postman_id": "12288f52-222b-4f71-ab09-296412712d29",
+		"name": "fastify-kysely-zod-auth-master",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26279260"
+	},
+	"item": [
+		{
+			"name": "user/",
+			"item": [
+				{
+					"name": "sign-up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json(); ",
+									"pm.collectionVariables.set(\"auth_token\", response.accessToken); ",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"name\",\n    \"email\":\"test1@test.com\",\n    \"login\":\"login\",\n    \"password\":\"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user/sign-up",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json(); ",
+									"pm.collectionVariables.set(\"auth_token\", response.accessToken); ",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"test1@test.com\",\n    \"password\":\"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "me",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/user/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "to-do/",
+			"item": [
+				{
+					"name": "get-todos-by-query",
+					"item": [
+						{
+							"name": "get-by-title",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "search",
+										"value": "Task 610",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{host}}/to-do?search=Task 7",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"to-do"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Task 7"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "sort-by",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "search",
+										"value": "Task 610",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{host}}/to-do?sortBy=notifyAt",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"to-do"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Task 7",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "notifyAt"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "sort-order",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "search",
+										"value": "Task 610",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{host}}/to-do?sortBy=notifyAt&sortOrder=desc",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"to-do"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Task 7",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "notifyAt"
+										},
+										{
+											"key": "sortOrder",
+											"value": "desc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "limit-offset",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "search",
+										"value": "Task 610",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{host}}/to-do?limit=20&offset=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"to-do"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Task 7",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "notifyAt",
+											"disabled": true
+										},
+										{
+											"key": "sortOrder",
+											"value": "desc",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "20"
+										},
+										{
+											"key": "offset",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "filter-by- is_completed",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/to-do?isCompleted=false",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"to-do"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Task 7",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "notifyAt",
+											"disabled": true
+										},
+										{
+											"key": "sortOrder",
+											"value": "desc",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "56",
+											"disabled": true
+										},
+										{
+											"key": "offset",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "isCompleted",
+											"value": "false"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all-query-params",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/to-do?search=Task 7&sortBy=notifyAt&sortOrder=desc&limit=2&offset=1&isCompleted=true",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"to-do"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Task 7"
+										},
+										{
+											"key": "sortBy",
+											"value": "notifyAt"
+										},
+										{
+											"key": "sortOrder",
+											"value": "desc"
+										},
+										{
+											"key": "limit",
+											"value": "2"
+										},
+										{
+											"key": "offset",
+											"value": "1"
+										},
+										{
+											"key": "isCompleted",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Дополнительные параметры к запросу всех задач пользователя"
+				},
+				{
+					"name": "get-to-dos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/to-do",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"to-do"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-to-do-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/to-do/7e1c977d-ed88-4a8a-9ca6-f0de3e614a29",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"to-do",
+								"7e1c977d-ed88-4a8a-9ca6-f0de3e614a29"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "insert-to-do",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"КАКОЕ ТО НАЗВАНИЕ\",\n  \"description\": \"ОПИСАНИЕ\",\n  \"notifyAt\": \"2025-01-25T14:00:00Z\",\n  \"isCompleted\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/to-do",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"to-do"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-to-do",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"КАКОЕ ТО ДРУГОЕ НАЗВАНИЕ\",\n  \"description\": \"ОПИСАНИЕ\",\n  \"notifyAt\": \"2025-05-25T14:00:00Z\",\n  \"isCompleted\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/to-do/7e1c977d-ed88-4a8a-9ca6-f0de3e614a29",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"to-do",
+								"7e1c977d-ed88-4a8a-9ca6-f0de3e614a29"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "share-to-do/",
+			"item": [
+				{
+					"name": "get-shares",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/share-to-do",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"share-to-do"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "share-to-do",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\":\"c58b8e4f-acf2-4f87-bc07-81922372538c\",\n    \"objectiveId\":\"bae09e73-126a-428d-9a66-a08b5605c428\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/share-to-do",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"share-to-do"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-share",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\":\"c58b8e4f-acf2-4f87-bc07-81922372538c\",\n    \"objectiveId\":\"bae09e73-126a-428d-9a66-a08b5605c428\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/share-to-do/c3bc73f4-b15e-4e0d-acc7-295fabb103cf",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"share-to-do",
+								"c3bc73f4-b15e-4e0d-acc7-295fabb103cf"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "127.0.0.1:3000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
