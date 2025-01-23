@@ -8,5 +8,5 @@ const schema = z.object({
     isCompleted: z.boolean().nullable().optional()
 });
 
-export type updateToDoSchema = z.infer<typeof schema>;
+export type UpdateToDoType = z.infer<typeof schema>;
 export const updateToDoFSchema: FastifySchema = { body: schema };

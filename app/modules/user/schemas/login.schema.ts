@@ -6,5 +6,5 @@ const schema = z.object({
     password: z.string().min(6)
 });
 
-export type loginSchema = z.infer<typeof schema>;
+export type loginType = z.infer<typeof schema>;
 export const loginFSchema: FastifySchema = { body: schema };

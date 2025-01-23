@@ -5,5 +5,5 @@ export const deleteShareSchema = z.object({
     id: string().uuid()
 });
 
-export type deleteShareQuery = z.infer<typeof deleteShareSchema>;
+export type deleteShareQueryType = z.infer<typeof deleteShareSchema>;
 export const deleteShareFSchema: FastifySchema = { params: deleteShareSchema };

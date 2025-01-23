@@ -1,7 +1,7 @@
 import type { FastifySchema } from "fastify";
 import { z } from "zod";
 
-export const getToDoQuerySchema = z.object({
+export const querySchema = z.object({
     search: z.string().optional(),
     sortBy: z.enum(["title", "createdAt", "notifyAt"]).optional().default("createdAt"),
     sortOrder: z.enum(["asc", "desc"]).optional().default("asc"),
@@ -10,5 +10,9 @@ export const getToDoQuerySchema = z.object({
     isCompleted: z.enum(["true", "false"]).optional()
 });
 
-export type getToDoQuery = z.infer<typeof getToDoQuerySchema>;
-export const getToDoFSchema: FastifySchema = { querystring: getToDoQuerySchema };
+export type GetToDoQueryType = z.infer<typeof querySchema>;
+export const getToDoFSchema: FastifySchema = { querystring: querySchema };
+
+export interface IGetToDo {
+    Querystring: GetToDoQueryType;
+}
