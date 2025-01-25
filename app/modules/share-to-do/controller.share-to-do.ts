@@ -36,6 +36,15 @@ export async function share(req: FastifyRequest<{ Body: shareToDoType }>, rep: F
 
 export async function remove(req: FastifyRequest, rep: FastifyReply) {
     const { id } = req.params as { id: string };
+    const todo = await getToDoById(sqlCon, id);
+    if (!todo) {
+        const info: IHandlingResponseError = { type: HandlingErrorType.Found, property: "objectiveId" };
+        return rep.code(HttpStatusCode.NOT_FOUND).send(info);
+    }
+    if (todo.creatorid != req.user.id) {
+        const info: IHandlingResponseError = { type: HandlingErrorType.Allowed, property: "userId" };
+        return rep.code(HttpStatusCode.NOT_ACCEPTABLE).send(info);
+    }
 
     const deleted = await shareToDoRepository.remove(sqlCon, id);
     if (!Number(deleted.numDeletedRows)) {
