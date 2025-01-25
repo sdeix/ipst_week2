@@ -1,6 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { IHandlingResponseError } from "../../common/config/http-response.ts";
 import { sqlCon } from "../../common/config/kysely-config";
+import { sendEmail } from "../../common/config/node-mailer.js";
 import { HandlingErrorType } from "../../common/enum/error-types";
 import { HttpStatusCode } from "../../common/enum/http-status-code";
 import { getToDoById } from "../to-do/repository.to-do";
@@ -30,7 +31,15 @@ export async function share(req: FastifyRequest<{ Body: shareToDoType }>, rep: F
     }
 
     const insertedToDo = await shareToDoRepository.insert(sqlCon, req.body);
-
+    const email = await sendEmail({
+        to: user.email,
+        subject: "Получен доступ к задаче другого пользователя",
+        text: `Пользователь с ID:${req.user.id} предоставил вам доступ к задаче с ID ${todo.id}`
+    });
+    if (email.isError) {
+        const info: IHandlingResponseError = { type: HandlingErrorType.Found, property: "email" };
+        return rep.code(HttpStatusCode.NOT_FOUND).send(info);
+    }
     return rep.code(HttpStatusCode.CREATED).send(insertedToDo);
 }
 
