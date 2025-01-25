@@ -1,13 +1,14 @@
 import { expressionBuilder, ExpressionWrapper, type Insertable, type Kysely, RawBuilder, SqlBool, Transaction } from "kysely";
 import { DB, Objectives } from "../../common/types/kysely/db.type";
 import { GetToDoQueryType } from "./schemas/get-to-do.schema";
+import { UpdateToDoType } from "./schemas/update-to-do.schema";
 
 type InsertableObjectiveRowType = Insertable<Objectives>;
 
 export async function insert(con: Kysely<DB> | Transaction<DB>, entity: InsertableObjectiveRowType) {
     return await con.insertInto("objectives").returningAll().values(entity).executeTakeFirstOrThrow();
 }
-export async function update(con: Kysely<DB> | Transaction<DB>, entity: object, id: string) {
+export async function update(con: Kysely<DB> | Transaction<DB>, entity: UpdateToDoType, id: string) {
     return await con
         .updateTable("objectives")
         .set({
