@@ -4,11 +4,11 @@ import { sqlCon } from "../../common/config/kysely-config";
 import { HandlingErrorType } from "../../common/enum/error-types";
 import { HttpStatusCode } from "../../common/enum/http-status-code";
 import * as toDoRepository from "./repository.to-do";
-import type { СreateToDoType } from "./schemas/create-to-do.schema";
+import type { CreateToDoType } from "./schemas/create-to-do.schema";
 import { IGetToDo } from "./schemas/get-to-do.schema";
 import type { UpdateToDoType } from "./schemas/update-to-do.schema";
 
-export async function create(req: FastifyRequest<{ Body: СreateToDoType }>, rep: FastifyReply) {
+export async function create(req: FastifyRequest<{ Body: CreateToDoType }>, rep: FastifyReply) {
     const todo = {
         ...req.body,
         creatorid: req.user.id!,
@@ -35,12 +35,26 @@ export async function update(req: FastifyRequest<{ Body: UpdateToDoType }>, rep:
     return rep.code(HttpStatusCode.OK).send(insertedToDo);
 }
 
-export async function get(req: FastifyRequest<IGetToDo>, rep: FastifyReply) {
-    const data = await toDoRepository.getToDosByQuery(sqlCon, req.query, req.user.id!);
+export async function var1Get(req: FastifyRequest<IGetToDo>, rep: FastifyReply) {
+    const data = await toDoRepository.var1GetToDosByQuery(sqlCon, req.query, req.user.id!);
 
     return rep.code(HttpStatusCode.OK).send(data);
 }
+export async function var2Get(req: FastifyRequest<IGetToDo>, rep: FastifyReply) {
+    const data = await toDoRepository.var2GetToDosByQuery(sqlCon, req.query, req.user.id!);
 
+    return rep.code(HttpStatusCode.OK).send(data);
+}
+export async function var3Get(req: FastifyRequest<IGetToDo>, rep: FastifyReply) {
+    const data = await toDoRepository.var3GetToDosByQuery(sqlCon, req.query, req.user.id!);
+
+    return rep.code(HttpStatusCode.OK).send(data);
+}
+export async function var4Get(req: FastifyRequest<IGetToDo>, rep: FastifyReply) {
+    const data = await toDoRepository.var4GetToDosByQuery(sqlCon, req.query, req.user.id!);
+
+    return rep.code(HttpStatusCode.OK).send(data);
+}
 export async function getById(req: FastifyRequest, rep: FastifyReply) {
     const { id } = req.params as { id: string };
 
