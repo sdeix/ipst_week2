@@ -1,3 +1,4 @@
+import fastifyAuth from "@fastify/auth";
 import { fastifyCors } from "@fastify/cors";
 import { fastifyJwt } from "@fastify/jwt";
 import { fastifySwagger } from "@fastify/swagger";
@@ -27,6 +28,7 @@ async function app() {
 
     app.register(fastifySwagger, swaggerOption);
     app.register(fastifySwaggerUi, swaggerUiOption);
+    app.register(fastifyAuth);
     await app.register(KyselyConfig);
     await app.register(fastifyJwt, jwtOption);
     await globalAuthHook(app);
