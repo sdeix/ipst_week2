@@ -1,9 +1,10 @@
 import { expressionBuilder, ExpressionWrapper, type Insertable, type Kysely, RawBuilder, SqlBool, Transaction } from "kysely";
-import { DB, Objectives } from "../../common/types/kysely/db.type";
+import { DB, Objectives, UserObjectiveShares } from "../../common/types/kysely/db.type";
 import { GetToDoQueryType } from "./schemas/get-to-do.schema";
 import { UpdateToDoType } from "./schemas/update-to-do.schema";
 
 type InsertableObjectiveRowType = Insertable<Objectives>;
+type InsertableShareRowType = Insertable<UserObjectiveShares>;
 
 export async function insert(con: Kysely<DB> | Transaction<DB>, entity: InsertableObjectiveRowType) {
     return await con.insertInto("objectives").returningAll().values(entity).executeTakeFirstOrThrow();
@@ -133,4 +134,14 @@ export async function var4GetToDosByQuery(con: Kysely<DB> | Transaction<DB>, fil
         .execute();
 
     return dataQuery;
+}
+
+export async function share(con: Kysely<DB> | Transaction<DB>, entity: InsertableShareRowType) {
+    return await con.insertInto("user-objective-shares").returningAll().values(entity).executeTakeFirstOrThrow();
+}
+export async function revoke(con: Kysely<DB> | Transaction<DB>, id: string) {
+    return await con.deleteFrom("user-objective-shares").where("objectiveId", "=", id).executeTakeFirst();
+}
+export async function listGrants(con: Kysely<DB> | Transaction<DB>, id: string) {
+    return await con.selectFrom("user-objective-shares").select("userId").where("objectiveId", "=", id).execute();
 }

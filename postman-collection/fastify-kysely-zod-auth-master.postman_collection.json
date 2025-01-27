@@ -360,12 +360,67 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "all-query-params Copy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/to-do?search=Task 7&sortBy=notifyAt&sortOrder=desc&limit=2&offset=1&isCompleted=true",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"to-do"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Task 7"
+										},
+										{
+											"key": "sortBy",
+											"value": "notifyAt"
+										},
+										{
+											"key": "sortOrder",
+											"value": "desc"
+										},
+										{
+											"key": "limit",
+											"value": "2"
+										},
+										{
+											"key": "offset",
+											"value": "1"
+										},
+										{
+											"key": "isCompleted",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"description": "Дополнительные параметры к запросу всех задач пользователя"
 				},
 				{
 					"name": "get-to-dos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -400,6 +455,46 @@
 					"response": []
 				},
 				{
+					"name": "share-to-do",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\":\"0e986b64-5119-4feb-a7b7-55fc984b5c23\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/to-do/7e1c977d-ed88-4a8a-9ca6-f0de3e614a29/share",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"to-do",
+								"7e1c977d-ed88-4a8a-9ca6-f0de3e614a29",
+								"share"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "insert-to-do",
 					"request": {
 						"method": "POST",
@@ -420,6 +515,46 @@
 							],
 							"path": [
 								"to-do"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "revoke-to-do",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\":\"0e986b64-5119-4feb-a7b7-55fc984b5c23\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/to-do/7e1c977d-ed88-4a8a-9ca6-f0de3e614a29/revoke",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"to-do",
+								"7e1c977d-ed88-4a8a-9ca6-f0de3e614a29",
+								"revoke"
 							]
 						}
 					},
@@ -451,37 +586,30 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "share-to-do/",
-			"item": [
+				},
 				{
-					"name": "get-shares",
+					"name": "list-grants-to-do",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{host}}/share-to-do",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"share-to-do"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "share-to-do",
-					"request": {
-						"method": "POST",
-						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userId\":\"c58b8e4f-acf2-4f87-bc07-81922372538c\",\n    \"objectiveId\":\"bae09e73-126a-428d-9a66-a08b5605c428\"\n}",
+							"raw": "{\n    \"userId\":\"0e986b64-5119-4feb-a7b7-55fc984b5c23\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -489,39 +617,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/share-to-do",
+							"raw": "{{host}}/to-do/7e1c977d-ed88-4a8a-9ca6-f0de3e614a29/list-grants",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"share-to-do"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete-share",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"userId\":\"c58b8e4f-acf2-4f87-bc07-81922372538c\",\n    \"objectiveId\":\"bae09e73-126a-428d-9a66-a08b5605c428\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/share-to-do/c3bc73f4-b15e-4e0d-acc7-295fabb103cf",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"share-to-do",
-								"c3bc73f4-b15e-4e0d-acc7-295fabb103cf"
+								"to-do",
+								"7e1c977d-ed88-4a8a-9ca6-f0de3e614a29",
+								"list-grants"
 							]
 						}
 					},
