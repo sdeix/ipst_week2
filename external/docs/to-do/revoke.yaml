@@ -1,0 +1,51 @@
+paths:
+  /todo/{id}/revoke:
+    delete:
+      tags:
+        - ToDo
+      summary: Revoke access to a ToDo item for multiple users
+      description: Remove access for a list of users to the specified ToDo item.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the ToDo item for which access is to be revoked.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userIds
+              properties:
+                userIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                  description: A list of user IDs whose access to the ToDo item will be revoked.
+      responses:
+        '200':
+          description: Access successfully revoked from users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates whether the revocation was successful
+        '404':
+          description: ToDo or user(s) not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message explaining which entities were not found

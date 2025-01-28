@@ -1,0 +1,38 @@
+paths:
+  /todo/{id}/list-grants:
+    get:
+      tags:
+        - ToDo
+      summary: Get a list of users with access to the ToDo item
+      description: Returns a list of users who have access to the specified ToDo item.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the ToDo item to check access for.
+      responses:
+        '200':
+          description: List of users with access
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    userId:
+                      type: string
+                      format: uuid
+        '404':
+          description: ToDo item not found or no users found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
