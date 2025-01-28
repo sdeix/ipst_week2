@@ -1,9 +1,22 @@
 import type { FastifySchema } from "fastify";
-import { string, z } from "zod";
+import { z } from "zod";
 
-const schema = z.object({
-    id: string().uuid()
+const paramsSchema = z.object({
+    id: z.string().uuid()
+});
+const bodySchema = z.object({
+    userIds: z.string().uuid().array()
 });
 
-export type revokeToDoType = z.infer<typeof schema>;
-export const revokeToDoFSchema: FastifySchema = { params: schema };
+type RevokeToDoBodyType = z.infer<typeof bodySchema>;
+type RevokeToDoParamsType = z.infer<typeof paramsSchema>;
+
+export const revokeToDoFSchema: FastifySchema = {
+    body: bodySchema,
+    params: paramsSchema
+};
+
+export interface IRevokeToDo {
+    Body: RevokeToDoBodyType;
+    Params: RevokeToDoParamsType;
+}

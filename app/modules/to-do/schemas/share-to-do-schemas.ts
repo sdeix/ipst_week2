@@ -1,11 +1,11 @@
 import type { FastifySchema } from "fastify";
-import { string, z } from "zod";
+import { z } from "zod";
 
 const paramsSchema = z.object({
-    id: string().uuid()
+    id: z.string().uuid()
 });
 const bodySchema = z.object({
-    userId: string().uuid()
+    userIds: z.string().uuid().array()
 });
 
 type ShareToDoBodyType = z.infer<typeof bodySchema>;

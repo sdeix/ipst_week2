@@ -139,8 +139,8 @@ export async function var4GetToDosByQuery(con: Kysely<DB> | Transaction<DB>, fil
 export async function share(con: Kysely<DB> | Transaction<DB>, entity: InsertableShareRowType) {
     return await con.insertInto("user-objective-shares").returningAll().values(entity).executeTakeFirstOrThrow();
 }
-export async function revoke(con: Kysely<DB> | Transaction<DB>, id: string) {
-    return await con.deleteFrom("user-objective-shares").where("objectiveId", "=", id).executeTakeFirst();
+export async function revoke(con: Kysely<DB> | Transaction<DB>, id: string, userId: string[]) {
+    return await con.deleteFrom("user-objective-shares").where("objectiveId", "=", id).where("userId", "in", userId).executeTakeFirst();
 }
 export async function listGrants(con: Kysely<DB> | Transaction<DB>, id: string) {
     return await con.selectFrom("user-objective-shares").select("userId").where("objectiveId", "=", id).execute();
