@@ -56,6 +56,7 @@ build/Release
 
 # Dependency directories
 
+bun.lockb
 node_modules/
 jspm_packages/
 
