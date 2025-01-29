@@ -10,5 +10,4 @@ export const checkCreatorId = async (request: FastifyRequest) => {
     if (data?.creatorid !== request.user.id) {
         throw new CustomException(403, "No access", { publicMessage: "No access" });
     }
-    return true;
 };
