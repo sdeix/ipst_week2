@@ -1,4 +1,4 @@
-import { expressionBuilder, ExpressionWrapper, type Insertable, type Kysely, RawBuilder, SqlBool, Transaction } from "kysely";
+import { expressionBuilder, ExpressionWrapper, type Insertable, type Kysely, OperandExpression, RawBuilder, SqlBool, Transaction } from "kysely";
 import { DB, Objectives, UserObjectiveShares } from "../../common/types/kysely/db.type";
 import { GetToDoQueryType } from "./schemas/get-to-do.schema";
 import { UpdateToDoType } from "./schemas/update-to-do.schema";
@@ -46,12 +46,12 @@ export async function var1GetToDosByQuery(con: Kysely<DB> | Transaction<DB>, que
         .offset(query.offset)
         .execute();
 }
-export async function var2GetToDosByQuery(con: Kysely<DB> | Transaction<DB>, query: GetToDoQueryType, userId: string) {
+export async function GetToDosByQuery(con: Kysely<DB> | Transaction<DB>, query: GetToDoQueryType, userId: string) {
     return await con
         .selectFrom("objectives")
         .selectAll()
-        .where((eb) =>
-            eb.and([
+        .where((eb) => {
+            const conditions = [
                 eb.or([
                     eb("creatorid", "=", userId),
                     eb.exists(
@@ -62,10 +62,12 @@ export async function var2GetToDosByQuery(con: Kysely<DB> | Transaction<DB>, que
                             .whereRef("user-objective-shares.objectiveId", "=", "objectives.id" as any)
                     )
                 ]),
-                ...(query.search !== undefined ? [eb("title", "ilike", `%${query.search}%`)] : []),
-                ...(query.isCompleted !== undefined ? [eb("isCompleted", "=", query.isCompleted === "true")] : [])
-            ])
-        )
+                query.search ? eb("title", "ilike", `%${query.search}%`) : null,
+                query.isCompleted !== undefined ? eb("isCompleted", "=", query.isCompleted === "true") : null
+            ].filter(Boolean);
+
+            return eb.and(conditions as OperandExpression<SqlBool>[]);
+        })
         .orderBy(query.sortBy, query.sortOrder)
         .limit(query.limit)
         .offset(query.offset)

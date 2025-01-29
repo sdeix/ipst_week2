@@ -33,26 +33,12 @@ export async function update(req: FastifyRequest<IUpdateToDo>, rep: FastifyReply
     return rep.code(HttpStatusCode.OK).send(insertedToDo);
 }
 
-export async function var1Get(req: FastifyRequest<IGetToDo>, rep: FastifyReply) {
-    const data = await toDoRepository.var1GetToDosByQuery(sqlCon, req.query, req.user.id!);
+export async function get(req: FastifyRequest<IGetToDo>, rep: FastifyReply) {
+    const data = await toDoRepository.GetToDosByQuery(sqlCon, req.query, req.user.id!);
 
     return rep.code(HttpStatusCode.OK).send(data);
 }
-export async function var2Get(req: FastifyRequest<IGetToDo>, rep: FastifyReply) {
-    const data = await toDoRepository.var2GetToDosByQuery(sqlCon, req.query, req.user.id!);
 
-    return rep.code(HttpStatusCode.OK).send(data);
-}
-export async function var3Get(req: FastifyRequest<IGetToDo>, rep: FastifyReply) {
-    const data = await toDoRepository.var3GetToDosByQuery(sqlCon, req.query, req.user.id!);
-
-    return rep.code(HttpStatusCode.OK).send(data);
-}
-export async function var4Get(req: FastifyRequest<IGetToDo>, rep: FastifyReply) {
-    const data = await toDoRepository.var4GetToDosByQuery(sqlCon, req.query, req.user.id!);
-
-    return rep.code(HttpStatusCode.OK).send(data);
-}
 export async function getById(req: FastifyRequest, rep: FastifyReply) {
     const { id } = req.params as { id: string };
 
