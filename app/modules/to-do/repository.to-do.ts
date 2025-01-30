@@ -28,7 +28,6 @@ export async function getToDoById(con: DbConnection, id: string) {
 }
 export async function GetToDosByQuery(con: DbConnection, query: GetToDoQueryType, userId: string) {
     const sortOrder = query.sortOrder === "desc" ? desc : asc;
-    console.log(query.search);
     return await con
         .select()
         .from(objectives)
