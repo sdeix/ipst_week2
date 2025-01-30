@@ -1,7 +1,6 @@
-import { fastify, type FastifyReply, type FastifyRequest } from "fastify";
+import { type FastifyReply, type FastifyRequest } from "fastify";
 import { sqlCon } from "../../common/config/drizzle-config";
 import { IHandlingResponseError } from "../../common/config/http-response";
-// import { sqlCon } from "../../common/config/kysely-config";
 import { sendEmail } from "../../common/config/node-mailer";
 import { HandlingErrorType } from "../../common/enum/error-types";
 import { HttpStatusCode } from "../../common/enum/http-status-code";
@@ -16,7 +15,7 @@ import type { IUpdateToDo } from "./schemas/update-to-do.schema";
 export async function create(req: FastifyRequest<{ Body: CreateToDoType }>, rep: FastifyReply) {
     const todo = {
         ...req.body,
-        creatorid: req.user.id!,
+        creatorId: req.user.id!,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
     };
@@ -53,7 +52,7 @@ export async function getById(req: FastifyRequest, rep: FastifyReply) {
 
 export async function share(req: FastifyRequest<IShareToDo>, rep: FastifyReply) {
     const { id } = req.params as { id: string };
-    const todo = await toDoRepository.getToDoById(fastify.db, id);
+    const todo = await toDoRepository.getToDoById(sqlCon, id);
 
     let notFoundedUsers = [];
 
@@ -98,7 +97,7 @@ export async function revoke(req: FastifyRequest<IRevokeToDo>, rep: FastifyReply
     }
 
     const deleted = await toDoRepository.revoke(sqlCon, id, req.body.userIds);
-    if (!Number(deleted.numDeletedRows)) {
+    if (!Number(deleted.rowCount)) {
         const info: IHandlingResponseError = { type: HandlingErrorType.Found, property: "share objectiveId or userIds" };
         return rep.code(HttpStatusCode.NOT_FOUND).send(info);
     }

@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { InferInsertModel, relations } from "drizzle-orm";
 import { boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const objectives = pgTable("objectives", {
@@ -7,9 +7,9 @@ export const objectives = pgTable("objectives", {
     title: text("title").notNull(),
     description: text("description"),
     isCompleted: boolean("isCompleted"),
-    notifyAt: timestamp("notifyAt", { mode: "date" }),
-    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull()
+    notifyAt: timestamp("notifyAt", { mode: "string" }),
+    createdAt: timestamp("createdAt", { mode: "string" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "string" }).defaultNow().notNull()
 });
 
 export const users = pgTable("users", {
@@ -49,3 +49,7 @@ export const userObjectiveSharesRelations = relations(userObjectiveShares, ({ on
         references: [objectives.id]
     })
 }));
+
+export type ObjectivesType = InferInsertModel<typeof objectives>;
+export type UsersType = InferInsertModel<typeof users>;
+export type UserObjectiveSharesType = InferInsertModel<typeof userObjectiveShares>;

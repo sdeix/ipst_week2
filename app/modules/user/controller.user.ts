@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import jwt from "jsonwebtoken";
+import { sqlCon } from "../../common/config/drizzle-config";
 import type { IHandlingResponseError } from "../../common/config/http-response.ts";
-import { sqlCon } from "../../common/config/kysely-config";
 import { HandlingErrorType } from "../../common/enum/error-types";
 import { HttpStatusCode } from "../../common/enum/http-status-code";
 import * as userRepository from "./repository.user";
