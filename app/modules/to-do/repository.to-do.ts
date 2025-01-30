@@ -1,4 +1,4 @@
-import { and, eq, inArray } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, inArray, or } from "drizzle-orm";
 import { DbConnection } from "../../common/config/drizzle-config";
 import { objectives, ObjectivesType, userObjectiveShares, UserObjectiveSharesType, users } from "../../common/types/drizzle/schema";
 import { GetToDoQueryType } from "./schemas/get-to-do.schema";
@@ -27,7 +27,24 @@ export async function getToDoById(con: DbConnection, id: string) {
         .then((result) => result[0]);
 }
 export async function GetToDosByQuery(con: DbConnection, query: GetToDoQueryType, userId: string) {
-    return await con.select().from(objectives).where(eq(objectives.creatorId, userId)); // последний ужас
+    const sortOrder = query.sortOrder === "desc" ? desc : asc;
+    console.log(query.search);
+    return await con
+        .select()
+        .from(objectives)
+        .where(
+            and(
+                or(
+                    eq(objectives.creatorId, userId),
+                    inArray(objectives.id, (await con.select({ id: userObjectiveShares.objectiveId })).from(userObjectiveShares).where(eq(userObjectiveShares.userId, userId)))
+                ),
+                query.search ? ilike(objectives.title, `%${query.search}%`) : undefined,
+                query.isCompleted ? eq(objectives.isCompleted, query.isCompleted === "true") : undefined
+            )
+        )
+        .orderBy(sortOrder(objectives[query.sortBy]))
+        .limit(query.limit)
+        .offset(query.offset);
 }
 export async function share(con: DbConnection, entity: UserObjectiveSharesType) {
     return await con.insert(userObjectiveShares).values(entity);

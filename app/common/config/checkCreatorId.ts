@@ -7,7 +7,7 @@ export const checkCreatorId = async (request: FastifyRequest) => {
     const { id } = request.params as { id: string };
     const data = await toDoRepository.getToDoById(sqlCon, id);
 
-    if (data[0]?.creatorId !== request.user.id) {
+    if (data?.creatorId !== request.user.id) {
         throw new CustomException(403, "No access", { publicMessage: "No access" });
     }
 };

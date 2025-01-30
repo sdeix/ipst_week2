@@ -30,7 +30,6 @@ async function app() {
     app.register(fastifySwaggerUi, swaggerUiOption);
     app.register(fastifyAuth);
     await app.register(DrizzleConfig);
-    // await app.register(KyselyConfig);
     await app.register(fastifyJwt, jwtOption);
     await globalAuthHook(app);
 
