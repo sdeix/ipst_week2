@@ -11,7 +11,7 @@ import { updateToDoFSchema } from "./schemas/update-to-do.schema";
 
 export const toDoRouter = async (app: FastifyInstance) => {
     app.get("/", { schema: getToDoFSchema }, toDoController.get);
-    app.get("/:id", { schema: getToDoByIdFSchema, preHandler: app.auth([checkCreatorId]) }, toDoController.getById);
+    app.get("/:id", { schema: getToDoByIdFSchema }, toDoController.getById);
     app.post("/", { schema: createToDoFSchema }, toDoController.create);
     app.patch("/:id", { schema: updateToDoFSchema, preHandler: app.auth([checkCreatorId]) }, toDoController.update);
     app.post("/:id/share", { schema: shareToDoFSchema, preHandler: app.auth([checkCreatorId]) }, toDoController.share);

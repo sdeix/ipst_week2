@@ -1,0 +1,11 @@
+config:
+  target: 'http://localhost:3000'
+  phases:
+    - duration: 10
+      arrivalRate: 100
+scenarios:
+  - flow:
+      - get:
+          url: "/to-do?search=Task&sortBy=notifyAt&sortOrder=desc&limit=2&offset=1&isCompleted=true"
+          headers:
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkyNjNkZjc5LWE2MWUtNGNjNS05ODAyLWY0Y2E0NGNjNTNkNCIsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTczODEyNzY3NiwiZXhwIjoxNzM4NzMyNDc2fQ.gzjmzV1pm3LQwiNWuGBBwlRYwK3J2YuSdETc7TbfH9M"

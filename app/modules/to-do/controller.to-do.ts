@@ -1,6 +1,7 @@
-import type { FastifyReply, FastifyRequest } from "fastify";
+import { fastify, type FastifyReply, type FastifyRequest } from "fastify";
+import { sqlCon } from "../../common/config/drizzle-config";
 import { IHandlingResponseError } from "../../common/config/http-response";
-import { sqlCon } from "../../common/config/kysely-config";
+// import { sqlCon } from "../../common/config/kysely-config";
 import { sendEmail } from "../../common/config/node-mailer";
 import { HandlingErrorType } from "../../common/enum/error-types";
 import { HttpStatusCode } from "../../common/enum/http-status-code";
@@ -52,7 +53,7 @@ export async function getById(req: FastifyRequest, rep: FastifyReply) {
 
 export async function share(req: FastifyRequest<IShareToDo>, rep: FastifyReply) {
     const { id } = req.params as { id: string };
-    const todo = await toDoRepository.getToDoById(sqlCon, id);
+    const todo = await toDoRepository.getToDoById(fastify.db, id);
 
     let notFoundedUsers = [];
 

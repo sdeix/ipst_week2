@@ -1,4 +1,7 @@
+import { eq } from "drizzle-orm";
 import { type Insertable, type Kysely, OperandExpression, SqlBool, Transaction } from "kysely";
+import { DbConnection } from "../../common/config/drizzle-config";
+import { objectives } from "../../common/types/drizzle/schema";
 import { DB, Objectives, UserObjectiveShares } from "../../common/types/kysely/db.type";
 import { GetToDoQueryType } from "./schemas/get-to-do.schema";
 import { UpdateToDoType } from "./schemas/update-to-do.schema";
@@ -20,8 +23,8 @@ export async function update(con: Kysely<DB> | Transaction<DB>, entity: UpdateTo
         .returningAll()
         .executeTakeFirstOrThrow();
 }
-export async function getToDoById(con: Kysely<DB> | Transaction<DB>, id: string) {
-    return await con.selectFrom("objectives").selectAll().where("id", "=", id).executeTakeFirst();
+export async function getToDoById(con: DbConnection, id: string) {
+    return await con.select().from(objectives).where(eq(objectives.id, id));
 }
 export async function GetToDosByQuery(con: Kysely<DB> | Transaction<DB>, query: GetToDoQueryType, userId: string) {
     return await con

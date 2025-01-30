@@ -4,9 +4,9 @@ import { fastifyJwt } from "@fastify/jwt";
 import { fastifySwagger } from "@fastify/swagger";
 import { fastifySwaggerUi } from "@fastify/swagger-ui";
 import { fastify, type FastifyInstance } from "fastify";
+import { DrizzleConfig } from "./common/config/drizzle-config";
 import { globalAuthHook } from "./common/config/global-auth";
 import { jwtOption } from "./common/config/jwt";
-import { KyselyConfig } from "./common/config/kysely-config";
 import { logger } from "./common/config/pino-plugin";
 import { AppErrorPipe, ZodValidatorCompiler } from "./common/config/pipe";
 import { swaggerOption, swaggerUiOption } from "./common/config/swagger";
@@ -29,7 +29,8 @@ async function app() {
     app.register(fastifySwagger, swaggerOption);
     app.register(fastifySwaggerUi, swaggerUiOption);
     app.register(fastifyAuth);
-    await app.register(KyselyConfig);
+    await app.register(DrizzleConfig);
+    // await app.register(KyselyConfig);
     await app.register(fastifyJwt, jwtOption);
     await globalAuthHook(app);
 
